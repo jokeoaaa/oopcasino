@@ -1,0 +1,14 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  datasource:
+  password:
+  url:
+  username:
+jpa:
+    hibernate:
+    ddl-auto: update
+    show-sql: true
+    properties:
