@@ -1,12 +1,15 @@
 package org.example.groupassignment.controllers;
 
-import com.sun.security.auth.UserPrincipal;
+import org.example.groupassignment.models.User;
+import org.example.groupassignment.payload.UserSummary;
+import org.example.groupassignment.security.CurrentUser;
+import org.example.groupassignment.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.example.groupassignment.services.UserService;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,20 +21,19 @@ public class UserController {
 
     @GetMapping("/me")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        // Возвращает информацию о текущем пользователе
-        return null;
+        User user = userService.getUserById(currentUser.getId());
+        return new UserSummary(user.getId(), user.getUsername(), user.getEmail());
     }
 
     @GetMapping("/balance")
     public ResponseEntity<?> getBalance(@CurrentUser UserPrincipal currentUser) {
-        // Возвращает баланс пользователя
-        return null;
+        User user = userService.getUserById(currentUser.getId());
+        return ResponseEntity.ok(user.getBalance());
     }
 
     @GetMapping("/history")
     public ResponseEntity<?> getGameHistory(@CurrentUser UserPrincipal currentUser) {
-        // Возвращает историю игр
-        return null;
+        // Implement logic to retrieve game history
+        return ResponseEntity.ok(/* game history */);
     }
 }
-
