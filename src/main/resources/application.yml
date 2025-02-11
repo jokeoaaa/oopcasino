@@ -1,0 +1,123 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/
+    username: postgres
+    password: 101523
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: UTC
+    serialization:
+      write-dates-as-timestamps: false
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+
+
+jwt:
+  secret: 50af5fba6c068b53bf36ce2e19b5ad776c183f795a81a7807544b217826012116ac246060a6e5b0d72d95940ec52155633d49a6c3a3ca20aa534ae4fd67d471d3c6b57e10a3707f95c8328670a6f5087014d11b4e849dea7d37c80b9025a476134f96bf582c0a5a31823bf51a5e287484e3237e764185653b137d5018716359c235780451587707fdacf9d9b069554c3c6889e0721a9cadf2c761d2ed7ca435ca660ebdeb2dbadcb4276128ad41cabaeaf136de2ad6fafe7ed4a1336097596c9b6c5ab6fe4cc22782d3bc924ffbb39094819d3eea6c97480ebef32c8fc8aa3813047af9e9d37d15222aa1bbff0cdfa54814d3b2ce9e4fbf94900083462094f84
+  expiration: 86400000
+
+logging:
+  level:
+    root: INFO
+    com.casino: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/casino-application.log
+    max-size: 10MB
+    max-history: 30
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+  show-actuator: true
+  packages-to-scan: com.casino.democasino.controller
+
+game:
+  initial-balance: 1000.0
+  min-bet: 1.0
+  max-bet: 1000.0
+  roulette:
+    min-bet: 1.0
+    max-bet: 500.0
+  slot-machine:
+    min-bet: 0.5
+    max-bet: 100.0
+
+
+cors:
+  allowed-origins: "http://localhost:3000"
+  allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+  allowed-headers: "*"
+  exposed-headers: "Authorization"
+  max-age: 3600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+  info:
+    git:
+      mode: full
+
+spring.cache:
+  type: caffeine
+  cache-names: users,games,sessions
+  caffeine:
+    spec: maximumSize=500,expireAfterAccess=600s
+
+spring.datasource.hikari:
+  maximum-pool-size: 10
+  minimum-idle: 5
+  idle-timeout: 300000
+  connection-timeout: 20000
+  max-lifetime: 1200000
+
+spring.transaction:
+  default-timeout: 30s
+  rollback-on-commit-failure: true
+
+spring.messages:
+  basename: messages
+  encoding: UTF-8
+  cache-duration: 3600s
+  fallback-to-system-locale: false
+
+security:
+  authentication:
+    jwt:
+      header: Authorization
+      prefix: "Bearer "
+  permitted-paths: "/api/auth/**,/api/public/**,/swagger-ui/**,/v3/api-docs/**"
